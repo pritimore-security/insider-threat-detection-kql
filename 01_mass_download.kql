@@ -1,0 +1,15 @@
+// Rule 1: Mass download compared to the user's own median day
+let DailyDownloads = FileActivity
+| where Operation == "FileDownloaded"
+| summarize Downloads = count(),
+            SensitiveDownloads = countif(SensitivityLabel in ("Confidential", "Highly Confidential")),
+            Files = make_set(FileName)
+    by UserId, Day = bin(TimeGenerated, 1d);
+let Baseline = DailyDownloads
+| summarize NormalPerDay = percentile(Downloads, 50) by UserId;
+DailyDownloads
+| join kind=inner Baseline on UserId
+| extend Ratio = round(todouble(Downloads) / NormalPerDay, 1)
+| where Downloads >= 15 and Ratio >= 5
+| project Day, UserId, Downloads, SensitiveDownloads, NormalPerDay, Ratio, Files
+| order by Ratio desc

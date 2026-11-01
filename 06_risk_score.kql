@@ -1,0 +1,26 @@
+// Risk score: combine all rules into one ranked list
+let Spike = FileActivity
+    | where Operation == "FileDownloaded"
+    | summarize Downloads = count() by UserId, bin(TimeGenerated, 1d)
+    | where Downloads >= 15
+    | distinct UserId | extend Rule = "Download spike", Points = 20;
+let Night = FileActivity
+    | where Operation == "FileDownloaded" and SensitivityLabel == "Confidential"
+    | extend HourIST = hourofday(datetime_utc_to_local(TimeGenerated, "Asia/Kolkata"))
+    | where HourIST < 8 or HourIST >= 20
+    | distinct UserId | extend Rule = "Night downloads", Points = 20;
+let Abroad = SigninLogs
+    | where Country != "India"
+    | project UserId = UserPrincipalName
+    | distinct UserId | extend Rule = "Login from another country", Points = 20;
+let Leaver = HR_Employees
+    | where Status == "Resigned"
+    | distinct UserId | extend Rule = "Leaver", Points = 20;
+let Personal = EmailEvents
+    | where SensitivityLabel == "Confidential"
+    | where RecipientAddress has_any ("gmail.com", "yahoo.com", "outlook.com", "hotmail.com")
+    | project UserId = SenderAddress
+    | distinct UserId | extend Rule = "Sent to personal email", Points = 30;
+union Spike, Night, Abroad, Leaver, Personal
+| summarize RiskScore = sum(Points), Rules = make_list(Rule) by UserId
+| order by RiskScore desc

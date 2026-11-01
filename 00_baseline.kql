@@ -1,0 +1,6 @@
+// Baseline: normal downloads per user per day
+FileActivity
+| where Operation == "FileDownloaded"
+| summarize DailyDownloads = count() by UserId, Day = bin(TimeGenerated, 1d)
+| summarize AvgPerDay = round(avg(DailyDownloads), 1), MaxPerDay = max(DailyDownloads) by UserId
+| order by MaxPerDay desc

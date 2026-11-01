@@ -1,0 +1,5 @@
+// Rule 5: Confidential attachments sent to personal email domains
+EmailEvents
+| where SensitivityLabel == "Confidential"
+| where RecipientAddress has_any ("gmail.com", "yahoo.com", "outlook.com", "hotmail.com")
+| summarize Emails = count(), Files = make_set(AttachmentName) by SenderAddress, RecipientAddress

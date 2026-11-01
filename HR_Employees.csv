@@ -1,0 +1,17 @@
+UserId,DisplayName,Department,Status,ResignationDate,LastWorkingDay
+rahul@shopnest.com,Rahul Mehta,Finance,Active,,
+priya@shopnest.com,Priya Sharma,Marketing,Active,,
+vikram@shopnest.com,Vikram Desai,IT,Active,,
+karan@shopnest.com,Karan Patil,Warehouse,Active,,
+sneha@shopnest.com,Sneha Joshi,Customer Service,Active,,
+amit@shopnest.com,Amit Kale,Customer Service,Active,,
+pooja@shopnest.com,Pooja Nair,Marketing,Active,,
+rohan@shopnest.com,Rohan Gupta,Finance,Active,,
+neha@shopnest.com,Neha Singh,Feed Operations,Active,,
+arjun@shopnest.com,Arjun Rao,Feed Operations,Active,,
+kavya@shopnest.com,Kavya Iyer,Customer Service,Active,,
+sachin@shopnest.com,Sachin Pawar,Warehouse,Active,,
+meera@shopnest.com,Meera Kulkarni,Marketing,Active,,
+deepak@shopnest.com,Deepak Shinde,IT,Active,,
+ritu@shopnest.com,Ritu Bhosale,Finance,Active,,
+anita@shopnest.com,Anita Kulkarni,Customer Service,Resigned,2026-10-15,2026-10-31

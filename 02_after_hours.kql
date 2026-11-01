@@ -1,0 +1,7 @@
+// Rule 2: Confidential downloads outside office hours (India time)
+FileActivity
+| where Operation == "FileDownloaded"
+| where SensitivityLabel == "Confidential"
+| extend HourIST = hourofday(datetime_utc_to_local(TimeGenerated, "Asia/Kolkata"))
+| where HourIST < 8 or HourIST >= 20
+| summarize NightDownloads = count() by UserId

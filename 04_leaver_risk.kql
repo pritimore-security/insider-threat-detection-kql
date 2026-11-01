@@ -1,0 +1,7 @@
+// Rule 4: Downloads before vs after resignation
+HR_Employees
+| where Status == "Resigned"
+| join kind=inner (FileActivity | where Operation == "FileDownloaded") on UserId
+| summarize BeforeResigning = countif(TimeGenerated < todatetime(ResignationDate)),
+            AfterResigning  = countif(TimeGenerated >= todatetime(ResignationDate))
+            by UserId, ResignationDate

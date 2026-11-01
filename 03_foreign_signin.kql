@@ -1,0 +1,4 @@
+// Rule 3: Sign-ins from outside India (success and failure)
+SigninLogs
+| where Country != "India"
+| summarize Attempts = count() by UserPrincipalName, Country, DeviceName, ResultType
